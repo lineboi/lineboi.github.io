@@ -79,6 +79,16 @@ ul { list-style: none; }
   font-weight: 800;
   letter-spacing: -0.5px;
   color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
 .nav-links {
@@ -568,9 +578,14 @@ ul { list-style: none; }
    ============================================= */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 60px;
+}
+
+/* AI card spans full width on last row when alone */
+.skill-card-ai:nth-child(5) {
+  grid-column: 2 / 4;
 }
 
 .skill-card {
@@ -607,6 +622,36 @@ ul { list-style: none; }
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 16px;
+}
+
+.skill-card-ai {
+  border-color: rgba(0, 212, 170, 0.25);
+  background: linear-gradient(135deg, var(--bg-card) 60%, rgba(0, 212, 170, 0.05));
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-card-ai::before {
+  content: 'AI';
+  position: absolute;
+  top: -10px; right: -6px;
+  font-size: 5rem;
+  font-weight: 900;
+  color: rgba(0, 212, 170, 0.04);
+  letter-spacing: -4px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.skill-icon-ai {
+  background: rgba(0, 212, 170, 0.18);
+}
+
+.skill-desc {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  line-height: 1.6;
 }
 
 .skill-tags {
@@ -1133,8 +1178,23 @@ footer {
   .hamburger { display: flex; }
 }
 
+@media (max-width: 900px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .skill-card-ai:nth-child(5) {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 600px) {
   .section { padding: 70px 0; }
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+  .skill-card-ai:nth-child(5) {
+    grid-column: 1;
+  }
 
   .about-stats {
     gap: 24px;

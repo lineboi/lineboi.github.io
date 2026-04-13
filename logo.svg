@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <rect width="48" height="48" rx="12" fill="#0a0e1a"/>
+  <rect width="48" height="48" rx="12" fill="url(#grad)" opacity="0.15"/>
+  <text x="24" y="33" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800"
+        text-anchor="middle" fill="#00d4aa" letter-spacing="-1">G</text>
+  <circle cx="36" cy="12" r="4" fill="#00d4aa" opacity="0.85"/>
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="48" y2="48">
+      <stop offset="0%" stop-color="#00d4aa"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </linearGradient>
+  </defs>
+</svg>

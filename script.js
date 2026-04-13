@@ -21,7 +21,7 @@ const translations = {
     'hero.location': 'Kigali, Rwanda',
     'photo.badge': 'Data Engineer',
     // Typewriter
-    'typewriter': ['Data Engineering Student', 'Python Developer', 'Digital Ambassador', 'Problem Solver'],
+    'typewriter': ['Data Engineering Student', 'AI Enthusiast', 'Python Developer', 'Digital Ambassador', 'Problem Solver'],
     // About
     'about.tag': 'Who I Am',
     'about.title': 'About Me',
@@ -60,6 +60,12 @@ const translations = {
     'tag.problemsolving': 'Problem Solving',
     'tag.datatrack': 'Data Tracking',
     'tag.training': 'Community Training',
+    'skills.ai': 'AI Enthusiast',
+    'skills.ai.desc': 'Passionate about Artificial Intelligence and its real-world applications.',
+    'tag.ml': 'Machine Learning',
+    'tag.nn': 'Neural Networks',
+    'tag.nlp': 'NLP',
+    'tag.aitools': 'AI Tools',
     // Experience
     'exp.tag': "What I've Done",
     'exp.title': 'Work Experience',
@@ -118,7 +124,7 @@ const translations = {
     'hero.location': 'Kigali, u Rwanda',
     'photo.badge': 'Inzobere mu Makuru',
     // Typewriter
-    'typewriter': ["Umunyeshuri w'Ubwubatsi bw'Amakuru", 'Umuhanga wa Python', 'Intumwa ya Dijitali', 'Umushoboye Ibibazo'],
+    'typewriter': ["Umunyeshuri w'Ubwubatsi bw'Amakuru", 'Inkunda AI', 'Umuhanga wa Python', 'Intumwa ya Dijitali', 'Umushoboye Ibibazo'],
     // About
     'about.tag': 'Uwo Ndi We',
     'about.title': 'Ibyerekeye Jye',
@@ -157,6 +163,12 @@ const translations = {
     'tag.problemsolving': 'Gukemura Ibibazo',
     'tag.datatrack': "Gukurikirana Amakuru",
     'tag.training': "Amahugurwa y'Abaturage",
+    'skills.ai': 'Inkunda AI',
+    'skills.ai.desc': "Nkunda cyane ubwenge bwa mudasobwa n'ibikorwa byayo mu isi nyaryo.",
+    'tag.ml': 'Kwigira kwa Mudasobwa',
+    'tag.nn': 'Imiyoboro ya Neurone',
+    'tag.nlp': 'Gutunganya Ururimi',
+    'tag.aitools': "Ibyuma bya AI",
     // Experience
     'exp.tag': 'Ibyo Nakoze',
     'exp.title': 'Uburambe mu Kazi',
