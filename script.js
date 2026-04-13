@@ -424,40 +424,6 @@ form.addEventListener('submit', (e) => {
   }, 3000);
 });
 
-// =============================================
-//  VIEW COUNTER
-// =============================================
-(function () {
-  const countEl = document.getElementById('view-count');
-  const wrapEl  = document.getElementById('view-count-wrap');
-
-  fetch('https://api.countapi.xyz/hit/lineboi.github.io/visits')
-    .then(r => r.json())
-    .then(data => {
-      if (countEl && typeof data.value === 'number') {
-        // Animate number rolling up
-        const target = data.value;
-        const duration = 1200;
-        const start = Math.max(0, target - 80);
-        const startTime = performance.now();
-
-        function tick(now) {
-          const elapsed = now - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-          const current = Math.round(start + (target - start) * eased);
-          countEl.textContent = current.toLocaleString();
-          if (progress < 1) requestAnimationFrame(tick);
-          else countEl.textContent = target.toLocaleString();
-        }
-
-        requestAnimationFrame(tick);
-      }
-    })
-    .catch(() => {
-      if (wrapEl) wrapEl.style.display = 'none';
-    });
-})();
 
 // =============================================
 //  SMOOTH SCROLL (offset for fixed nav)
