@@ -1,13 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-  <rect width="48" height="48" rx="12" fill="#0a0e1a"/>
-  <rect width="48" height="48" rx="12" fill="url(#grad)" opacity="0.15"/>
-  <text x="24" y="33" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800"
-        text-anchor="middle" fill="#00d4aa" letter-spacing="-1">G</text>
-  <circle cx="36" cy="12" r="4" fill="#00d4aa" opacity="0.85"/>
-  <defs>
-    <linearGradient id="grad" x1="0" y1="0" x2="48" y2="48">
-      <stop offset="0%" stop-color="#00d4aa"/>
-      <stop offset="100%" stop-color="#0a0e1a"/>
-    </linearGradient>
-  </defs>
+  <!-- Background -->
+  <rect width="48" height="48" rx="11" fill="#0a0e1a"/>
+  <rect width="48" height="48" rx="11" fill="#00d4aa" opacity="0.08"/>
+  <!-- G shape using paths (no font dependency) -->
+  <path d="M30 17.5 C27.8 15.3 25.1 14 22 14 C16.5 14 12 18.5 12 24 C12 29.5 16.5 34 22 34 C26.8 34 30.8 30.8 31.7 26.5 L23 26.5 L23 22.5 L36 22.5 L36 24 C36 30.6 29.7 36 22 36 C14.3 36 8 29.8 8 22 C8 14.3 14.3 8 22 8 C26.2 8 30.1 9.8 32.8 12.7 Z" fill="#00d4aa" transform="scale(0.62) translate(3.5, 3.5)"/>
+  <!-- Accent dot -->
+  <circle cx="38" cy="10" r="3.5" fill="#00d4aa"/>
 </svg>
