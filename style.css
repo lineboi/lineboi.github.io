@@ -114,6 +114,49 @@ ul { list-style: none; }
   width: 100%;
 }
 
+/* ---- Language Toggle ---- */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.lang-toggle:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.lang-option {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-faint);
+  transition: color var(--transition);
+  letter-spacing: 0.5px;
+}
+
+.lang-option.active {
+  color: var(--accent);
+}
+
+.lang-divider {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+
+/* ---- Hamburger ---- */
 .hamburger {
   display: none;
   flex-direction: column;
