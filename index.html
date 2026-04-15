@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +12,9 @@
 </head>
 <body>
 
+  <!-- 3D Particle Canvas (hero background) -->
+  <canvas id="hero-canvas"></canvas>
+
   <!-- Navigation -->
   <nav id="navbar">
     <div class="nav-inner">
@@ -20,17 +23,44 @@
         <span>gwiza<span class="accent">.</span></span>
       </a>
       <ul class="nav-links">
-        <li><a href="#about" data-i18n="nav.about">About</a></li>
-        <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+        <li><a href="#about"      data-i18n="nav.about">About</a></li>
+        <li><a href="#skills"     data-i18n="nav.skills">Skills</a></li>
         <li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
-        <li><a href="#education" data-i18n="nav.education">Education</a></li>
-        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+        <li><a href="#projects"   data-i18n="nav.projects">Projects</a></li>
+        <li><a href="#education"  data-i18n="nav.education">Education</a></li>
+        <li><a href="#awards"     data-i18n="nav.awards">Awards</a></li>
+        <li><a href="#gallery"    data-i18n="nav.gallery">Gallery</a></li>
+        <li><a href="#contact"    data-i18n="nav.contact">Contact</a></li>
       </ul>
       <div class="nav-right">
+        <!-- Language Toggle: click cycles EN→FR→RW→EN -->
         <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">
           <span class="lang-option" id="lang-en">EN</span>
           <span class="lang-divider">|</span>
+          <span class="lang-option" id="lang-fr">FR</span>
+          <span class="lang-divider">|</span>
           <span class="lang-option" id="lang-rw">RW</span>
+        </button>
+        <!-- 3D Mode Toggle -->
+        <button class="toggle-3d" id="toggle-3d" aria-label="Toggle 3D effects" title="Toggle 3D effects">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </button>
+        <!-- Day / Night Toggle -->
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
         </button>
         <button class="hamburger" id="hamburger" aria-label="Toggle menu">
           <span></span><span></span><span></span>
@@ -38,11 +68,14 @@
       </div>
     </div>
     <ul class="mobile-menu" id="mobile-menu">
-      <li><a href="#about" data-i18n="nav.about">About</a></li>
-      <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+      <li><a href="#about"      data-i18n="nav.about">About</a></li>
+      <li><a href="#skills"     data-i18n="nav.skills">Skills</a></li>
       <li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
-      <li><a href="#education" data-i18n="nav.education">Education</a></li>
-      <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+      <li><a href="#projects"   data-i18n="nav.projects">Projects</a></li>
+      <li><a href="#education"  data-i18n="nav.education">Education</a></li>
+      <li><a href="#awards"     data-i18n="nav.awards">Awards</a></li>
+      <li><a href="#gallery"    data-i18n="nav.gallery">Gallery</a></li>
+      <li><a href="#contact"    data-i18n="nav.contact">Contact</a></li>
     </ul>
   </nav>
 
@@ -70,6 +103,21 @@
         <div class="hero-location">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <span data-i18n="hero.location">Kigali, Rwanda</span>
+        </div>
+        <!-- Social Links -->
+        <div class="hero-social">
+          <a href="https://github.com/lineboi" target="_blank" rel="noopener" aria-label="GitHub" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+          </a>
+          <a href="#" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="#" target="_blank" rel="noopener" aria-label="Twitter / X" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="#" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
         </div>
       </div>
       <div class="hero-photo">
@@ -123,7 +171,7 @@
               <span class="stat-label" data-i18n="about.stat2">Years Coding</span>
             </div>
             <div class="stat">
-              <span class="stat-number">2</span>
+              <span class="stat-number">3</span>
               <span class="stat-label" data-i18n="about.stat3">Languages</span>
             </div>
           </div>
@@ -133,38 +181,23 @@
           <ul class="info-list">
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <div>
-                <span data-i18n="about.info.name.label">Full Name</span>
-                <strong>Iradukunda Gwiza Moise</strong>
-              </div>
+              <div><span data-i18n="about.info.name.label">Full Name</span><strong>Iradukunda Gwiza Moise</strong></div>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              <div>
-                <span data-i18n="about.info.email.label">Email</span>
-                <strong>esiomwiz@gmail.com</strong>
-              </div>
+              <div><span data-i18n="about.info.email.label">Email</span><strong>esiomwiz@gmail.com</strong></div>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.92 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              <div>
-                <span data-i18n="about.info.phone.label">Phone</span>
-                <strong>0790167926</strong>
-              </div>
+              <div><span data-i18n="about.info.phone.label">Phone</span><strong>0790167926</strong></div>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <div>
-                <span data-i18n="about.info.location.label">Location</span>
-                <strong data-i18n="hero.location">Kigali, Rwanda</strong>
-              </div>
+              <div><span data-i18n="about.info.location.label">Location</span><strong data-i18n="hero.location">Kigali, Rwanda</strong></div>
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <div>
-                <span data-i18n="about.info.availability.label">Availability</span>
-                <strong data-i18n="about.info.availability.value">Open to Opportunities</strong>
-              </div>
+              <div><span data-i18n="about.info.availability.label">Availability</span><strong data-i18n="about.info.availability.value">Open to Opportunities</strong></div>
             </li>
           </ul>
         </div>
@@ -180,24 +213,19 @@
         <h2 class="section-title" data-i18n="skills.title">Technical Skills</h2>
       </div>
       <div class="skills-grid">
-
-        <div class="skill-card">
+        <div class="skill-card tilt-card">
           <div class="skill-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </div>
           <h3 data-i18n="skills.programming">Programming</h3>
           <div class="skill-tags">
-            <span class="tag">Python</span>
-            <span class="tag">SQL</span>
-            <span class="tag">C</span>
-            <span class="tag">C++</span>
-            <span class="tag">Java</span>
+            <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">C</span>
+            <span class="tag">C++</span><span class="tag">Java</span>
             <span class="tag" data-i18n="tag.algorithms">Algorithms</span>
             <span class="tag" data-i18n="tag.ds">Data Structures</span>
           </div>
         </div>
-
-        <div class="skill-card">
+        <div class="skill-card tilt-card">
           <div class="skill-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
           </div>
@@ -209,8 +237,7 @@
             <span class="tag" data-i18n="tag.pipelines">Data Pipelines</span>
           </div>
         </div>
-
-        <div class="skill-card">
+        <div class="skill-card tilt-card">
           <div class="skill-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
@@ -221,8 +248,7 @@
             <span class="tag" data-i18n="tag.literacy">Digital Literacy</span>
           </div>
         </div>
-
-        <div class="skill-card">
+        <div class="skill-card tilt-card">
           <div class="skill-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
@@ -233,8 +259,7 @@
             <span class="tag" data-i18n="tag.problemsolving">Problem Solving</span>
           </div>
         </div>
-
-        <div class="skill-card skill-card-ai">
+        <div class="skill-card skill-card-ai tilt-card">
           <div class="skill-icon skill-icon-ai">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a4 4 0 0 1 4 4c0 1.5-.8 2.8-2 3.4V12h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-1v1a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2v-1H8a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h2V9.4C8.8 8.8 8 7.5 8 6a4 4 0 0 1 4-4z"/><circle cx="12" cy="6" r="1.5" fill="currentColor" stroke="none"/></svg>
           </div>
@@ -247,27 +272,24 @@
             <span class="tag" data-i18n="tag.aitools">AI Tools</span>
           </div>
         </div>
-
       </div>
-
       <div class="languages-section">
         <h3 data-i18n="skills.languages">Languages</h3>
         <div class="lang-grid">
           <div class="lang-item">
             <div class="lang-flag">RW</div>
-            <div class="lang-info">
-              <strong>Kinyarwanda</strong>
-              <span data-i18n="lang.rw.level">Native</span>
-            </div>
+            <div class="lang-info"><strong>Kinyarwanda</strong><span data-i18n="lang.rw.level">Native</span></div>
             <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
           </div>
           <div class="lang-item">
             <div class="lang-flag">EN</div>
-            <div class="lang-info">
-              <strong>English</strong>
-              <span data-i18n="lang.en.level">Professional Working Proficiency</span>
-            </div>
+            <div class="lang-info"><strong>English</strong><span data-i18n="lang.en.level">Professional Working Proficiency</span></div>
             <div class="lang-bar"><div class="lang-fill" style="width:80%"></div></div>
+          </div>
+          <div class="lang-item">
+            <div class="lang-flag">FR</div>
+            <div class="lang-info"><strong>Français</strong><span data-i18n="lang.fr.level">Intermediate</span></div>
+            <div class="lang-bar"><div class="lang-fill" style="width:60%"></div></div>
           </div>
         </div>
       </div>
@@ -282,10 +304,9 @@
         <h2 class="section-title" data-i18n="exp.title">Work Experience</h2>
       </div>
       <div class="timeline">
-
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-card">
+          <div class="timeline-card tilt-card">
             <div class="timeline-header">
               <div>
                 <h3 data-i18n="exp.job2.title">Software Developer</h3>
@@ -307,10 +328,9 @@
             </div>
           </div>
         </div>
-
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-card">
+          <div class="timeline-card tilt-card">
             <div class="timeline-header">
               <div>
                 <h3 data-i18n="exp.job.title">Digital Ambassador</h3>
@@ -335,16 +355,85 @@
     </div>
   </section>
 
+  <!-- Projects -->
+  <section id="projects" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-i18n="projects.tag">What I've Built</span>
+        <h2 class="section-title" data-i18n="projects.title">My Projects</h2>
+      </div>
+      <div class="projects-grid">
+
+        <div class="project-card tilt-card">
+          <div class="project-header">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/lineboi" target="_blank" rel="noopener" class="project-link" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              </a>
+              <a href="#" target="_blank" rel="noopener" class="project-link" aria-label="Live Demo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+          </div>
+          <h3 class="project-title" data-i18n="proj.1.title">Personal Portfolio Website</h3>
+          <p class="project-desc" data-i18n="proj.1.desc">A modern, responsive portfolio website featuring trilingual support (EN/FR/RW), 3D effects, day/night mode, animated interactions, and a live visit counter.</p>
+          <div class="project-tags">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+          </div>
+        </div>
+
+        <div class="project-card tilt-card">
+          <div class="project-header">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/lineboi" target="_blank" rel="noopener" class="project-link" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              </a>
+            </div>
+          </div>
+          <h3 class="project-title" data-i18n="proj.2.title">Community Training Tracker</h3>
+          <p class="project-desc" data-i18n="proj.2.desc">A Python and Excel-based data tracker built during the RISA digital ambassador program to record, clean, and analyze training sessions for 250+ citizens across Bugomba Cell.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span><span class="tag">Excel</span><span class="tag">Pandas</span>
+          </div>
+        </div>
+
+        <div class="project-card tilt-card">
+          <div class="project-header">
+            <div class="project-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/lineboi" target="_blank" rel="noopener" class="project-link" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+              </a>
+            </div>
+          </div>
+          <h3 class="project-title" data-i18n="proj.3.title">Data Pipeline (ETL)</h3>
+          <p class="project-desc" data-i18n="proj.3.desc">An automated ETL pipeline built with Python that extracts data from CSV sources, transforms it with Pandas, and loads structured results into a PostgreSQL database.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span><span class="tag">PostgreSQL</span><span class="tag">ETL</span><span class="tag">Pandas</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- Education -->
-  <section id="education" class="section section-dark">
+  <section id="education" class="section">
     <div class="container">
       <div class="section-header">
         <span class="section-tag" data-i18n="edu.tag">My Background</span>
         <h2 class="section-title" data-i18n="edu.title">Education</h2>
       </div>
       <div class="edu-grid">
-
-        <div class="edu-card">
+        <div class="edu-card tilt-card">
           <div class="edu-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
           </div>
@@ -361,8 +450,7 @@
             </ul>
           </div>
         </div>
-
-        <div class="edu-card">
+        <div class="edu-card tilt-card">
           <div class="edu-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
           </div>
@@ -378,13 +466,195 @@
             </ul>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Honors & Awards -->
+  <section id="awards" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-i18n="awards.tag">Recognition</span>
+        <h2 class="section-title" data-i18n="awards.title">Honors &amp; Awards</h2>
+      </div>
+      <div class="awards-grid">
+
+        <div class="award-card tilt-card">
+          <div class="award-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+          </div>
+          <div class="award-year">2024</div>
+          <h3 data-i18n="award.1.title">Digital Ambassador Excellence</h3>
+          <p class="award-org" data-i18n="award.1.org">Rwanda Information Society Authority (RISA)</p>
+          <p class="award-desc" data-i18n="award.1.desc">Recognized for outstanding contribution in digital literacy training, reaching over 250 citizens in the Bugomba Cell and delivering measurable community impact.</p>
+        </div>
+
+        <div class="award-card tilt-card">
+          <div class="award-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div class="award-year">2024</div>
+          <h3 data-i18n="award.2.title">University Enrollment Merit</h3>
+          <p class="award-org" data-i18n="award.2.org">University of Rwanda (CST)</p>
+          <p class="award-desc" data-i18n="award.2.desc">Selected for the Computer Science program based on strong A-Level performance in Mathematics, Physics, and Computer Science.</p>
+        </div>
+
+        <div class="award-card tilt-card">
+          <div class="award-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="award-year">2023</div>
+          <h3 data-i18n="award.3.title">A-Level MPC Distinction</h3>
+          <p class="award-org" data-i18n="award.3.org">Nyagatare Secondary School</p>
+          <p class="award-desc" data-i18n="award.3.desc">Completed Advanced Level in Mathematics, Physics, and Computer Science with distinction, demonstrating strong analytical and technical aptitude.</p>
+        </div>
 
       </div>
     </div>
   </section>
 
+  <!-- Photo Gallery -->
+  <section id="gallery" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-i18n="gallery.tag">My Journey</span>
+        <h2 class="section-title" data-i18n="gallery.title">Photo Gallery</h2>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="gallery-filters">
+        <button class="gallery-filter active" data-filter="all"      data-i18n="gallery.filter.all">All</button>
+        <button class="gallery-filter" data-filter="friends"         data-i18n="gallery.filter.friends">With Friends</button>
+        <button class="gallery-filter" data-filter="uncle"           data-i18n="gallery.filter.uncle">As Uncle</button>
+        <button class="gallery-filter" data-filter="ceremony"        data-i18n="gallery.filter.ceremony">In Ceremony</button>
+        <button class="gallery-filter" data-filter="family"          data-i18n="gallery.filter.family">With Family</button>
+        <button class="gallery-filter" data-filter="playing"         data-i18n="gallery.filter.playing">Playing</button>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="gallery-grid" id="gallery-grid">
+
+        <!-- With Friends -->
+        <div class="gallery-item gallery-clickable" data-category="friends"
+             data-src="withfreind2.jpeg"
+             data-caption="Campus life — creating memories with great friends at the University of Rwanda."
+             role="button" tabindex="0" aria-label="View photo">
+          <img src="withfreind2.jpeg" alt="With friends at campus" loading="lazy" />
+          <div class="gallery-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p>Campus life — creating memories with great friends at the University of Rwanda.</p>
+          </div>
+        </div>
+
+        <div class="gallery-item gallery-clickable" data-category="friends"
+             data-src="withfreind4.jpeg"
+             data-caption="A stroll with a close friend — good company makes every moment memorable."
+             role="button" tabindex="0" aria-label="View photo">
+          <img src="withfreind4.jpeg" alt="Walking with friend" loading="lazy" />
+          <div class="gallery-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p>A stroll with a close friend — good company makes every moment memorable.</p>
+          </div>
+        </div>
+
+        <div class="gallery-item gallery-clickable" data-category="friends"
+             data-src="withfreind1.jpeg"
+             data-caption="Building bonds beyond the classroom — friendship is the foundation of every journey."
+             role="button" tabindex="0" aria-label="View photo">
+          <img src="withfreind1.jpeg" alt="With friend in building" loading="lazy" />
+          <div class="gallery-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p>Building bonds beyond the classroom — friendship is the foundation of every journey.</p>
+          </div>
+        </div>
+
+        <!-- As Uncle -->
+        <div class="gallery-item gallery-clickable" data-category="uncle"
+             data-src="asancle.jpeg"
+             data-caption="Uncle mode activated — there's nothing quite like the joy of being the favourite uncle."
+             role="button" tabindex="0" aria-label="View photo">
+          <img src="asancle.jpeg" alt="As uncle with child on sofa" loading="lazy" />
+          <div class="gallery-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p>Uncle mode activated — there's nothing quite like the joy of being the favourite uncle.</p>
+          </div>
+        </div>
+
+        <div class="gallery-item gallery-clickable" data-category="uncle"
+             data-src="asancle1.jpeg"
+             data-caption="Carrying the next generation on my shoulders — proud uncle moments that warm the heart."
+             role="button" tabindex="0" aria-label="View photo">
+          <img src="asancle1.jpeg" alt="Uncle carrying baby on shoulders" loading="lazy" />
+          <div class="gallery-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p>Carrying the next generation on my shoulders — proud uncle moments that warm the heart.</p>
+          </div>
+        </div>
+
+        <!-- In Ceremony -->
+        <div class="gallery-item gallery-clickable" data-category="ceremony"
+             data-src="inceremony.jpeg"
+             data-caption="Dressed for the occasion — celebrating life's milestones with the people who matter."
+             role="button" tabindex="0" aria-label="View photo">
+          <img src="inceremony.jpeg" alt="At ceremony with friends" loading="lazy" />
+          <div class="gallery-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p>Dressed for the occasion — celebrating life's milestones with the people who matter.</p>
+          </div>
+        </div>
+
+        <div class="gallery-item gallery-clickable" data-category="ceremony"
+             data-src="kivew_WhatsApp Image 2026-04-15 at 7.25.41 PM.jpeg"
+             data-caption="Gathering with cherished friends — every occasion becomes unforgettable in great company."
+             role="button" tabindex="0" aria-label="View photo">
+          <img src="kivew_WhatsApp Image 2026-04-15 at 7.25.41 PM.jpeg" alt="Group photo together" loading="lazy" />
+          <div class="gallery-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p>Gathering with cherished friends — every occasion becomes unforgettable in great company.</p>
+          </div>
+        </div>
+
+        <!-- With Family -->
+        <div class="gallery-item gallery-clickable" data-category="family"
+             data-src="family2.jpeg"
+             data-caption="Family is everything — celebrating milestones with the people who mean the world to me."
+             role="button" tabindex="0" aria-label="View photo">
+          <img src="family2.jpeg" alt="With family at ceremony" loading="lazy" />
+          <div class="gallery-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p>Family is everything — celebrating milestones with the people who mean the world to me.</p>
+          </div>
+        </div>
+
+        <!-- Playing -->
+        <div class="gallery-item gallery-clickable" data-category="playing"
+             data-src="playingwithAI.jpeg"
+             data-caption="When AI dreams meet football passion — playing around with AI-generated art at Old Trafford!"
+             role="button" tabindex="0" aria-label="View photo">
+          <img src="playingwithAI.jpeg" alt="AI generated football photo at Old Trafford" loading="lazy" />
+          <div class="gallery-caption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <p>When AI dreams meet football passion — playing around with AI-generated art at Old Trafford!</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="lightbox-inner">
+      <img class="lightbox-img" id="lightbox-img" src="" alt="Gallery photo" />
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+    </div>
+  </div>
+
   <!-- Contact -->
-  <section id="contact" class="section">
+  <section id="contact" class="section section-dark">
     <div class="container">
       <div class="section-header">
         <span class="section-tag" data-i18n="contact.tag">Let's Connect</span>
@@ -398,32 +668,32 @@
           </p>
           <div class="contact-items">
             <a href="mailto:esiomwiz@gmail.com" class="contact-item">
-              <div class="contact-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </div>
-              <div>
-                <span data-i18n="contact.email.label">Email</span>
-                <strong>esiomwiz@gmail.com</strong>
-              </div>
+              <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div><span data-i18n="contact.email.label">Email</span><strong>esiomwiz@gmail.com</strong></div>
             </a>
             <a href="tel:0790167926" class="contact-item">
-              <div class="contact-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.92 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              </div>
-              <div>
-                <span data-i18n="contact.phone.label">Phone</span>
-                <strong>0790167926</strong>
-              </div>
+              <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.92 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+              <div><span data-i18n="contact.phone.label">Phone</span><strong>0790167926</strong></div>
             </a>
             <div class="contact-item no-link">
-              <div class="contact-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-              <div>
-                <span data-i18n="contact.location.label">Location</span>
-                <strong data-i18n="hero.location">Kigali, Rwanda</strong>
-              </div>
+              <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div><span data-i18n="contact.location.label">Location</span><strong data-i18n="hero.location">Kigali, Rwanda</strong></div>
             </div>
+          </div>
+          <!-- Social links in contact -->
+          <div class="contact-social">
+            <a href="https://github.com/lineboi" target="_blank" rel="noopener" aria-label="GitHub" class="social-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" aria-label="Twitter/X" class="social-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
           </div>
         </div>
         <form class="contact-form" id="contact-form">
@@ -452,15 +722,23 @@
   <footer>
     <div class="footer-inner">
       <p class="footer-logo">gwiza<span class="accent">.</span></p>
-
-      <div class="view-counter">
-        <img
-          src="https://hits.sh/lineboi.github.io.svg?style=flat-square&color=00d4aa&labelColor=111827&label=visitors"
-          alt="Visitor count"
-          class="hits-badge"
-        />
+      <div class="footer-social">
+        <a href="https://github.com/lineboi" target="_blank" rel="noopener" aria-label="GitHub" class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        </a>
+        <a href="#" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="#" target="_blank" rel="noopener" aria-label="Twitter/X" class="social-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
       </div>
-
+      <div class="view-counter">
+        <img src="https://hits.sh/lineboi.github.io.svg?style=flat-square&color=00d4aa&labelColor=111827&label=visitors" alt="Visitor count" class="hits-badge" />
+      </div>
       <p class="footer-copy" data-i18n="footer.copy">&copy; 2024 Iradukunda Gwiza Moise. All rights reserved.</p>
       <p class="footer-made" data-i18n="footer.made">Built with passion in Kigali, Rwanda</p>
     </div>
