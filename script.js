@@ -494,15 +494,93 @@ function buildSceneCards() {
   });
 }
 
-function navigateFromScene(id) {
-  closeScene();
-  const el = document.getElementById(id);
-  if (el) {
-    setTimeout(() => {
-      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
-    }, 420);
+// ---- Section detail view ----
+let sectionViewActive = false;
+let currentSectionIdx = 0;
+
+const sceneSectionView = document.getElementById('scene-section-view');
+const sceneSectionBody = document.getElementById('scene-section-body');
+const sceneSectionPanel = document.getElementById('scene-section-panel');
+const sceneBackBtn     = document.getElementById('scene-back-btn');
+const scenePrevBtn     = document.getElementById('scene-prev-btn');
+const sceneNextBtn     = document.getElementById('scene-next-btn');
+const sceneNavCounter  = document.getElementById('scene-nav-counter');
+const sceneHintEl      = document.getElementById('scene-hint');
+const sceneStageEl     = document.getElementById('scene-stage');
+
+function openSectionView(id, idx) {
+  currentSectionIdx = idx;
+
+  // Clone section content into the panel
+  const sectionEl = document.getElementById(id);
+  if (sectionEl) {
+    const container = sectionEl.querySelector('.container');
+    sceneSectionBody.innerHTML = container ? container.innerHTML : '';
+    // Make all fade-in elements visible immediately
+    sceneSectionBody.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+    // Trigger language bar animations
+    sceneSectionBody.querySelectorAll('.lang-fill').forEach(el => {
+      const w = el.style.width;
+      el.style.setProperty('--w', w);
+      requestAnimationFrame(() => el.classList.add('animate'));
+    });
+    // Re-bind gallery lightbox for cloned items
+    sceneSectionBody.querySelectorAll('.gallery-clickable').forEach(item => {
+      item.addEventListener('click', () => {
+        const src     = item.getAttribute('data-src') || item.querySelector('img')?.src;
+        const caption = item.getAttribute('data-caption') || '';
+        if (src) openLightbox(src, caption);
+      });
+    });
+    // Re-bind gallery filters scoped to panel
+    const panelFilters = sceneSectionBody.querySelectorAll('.gallery-filter');
+    const panelItems   = sceneSectionBody.querySelectorAll('.gallery-item');
+    panelFilters.forEach(btn => {
+      btn.addEventListener('click', () => {
+        panelFilters.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter');
+        panelItems.forEach(item => {
+          item.classList.toggle('hidden', filter !== 'all' && item.getAttribute('data-category') !== filter);
+        });
+      });
+    });
   }
+
+  sceneNavCounter.textContent = `${idx + 1} / ${SCENE_DATA.length}`;
+  sceneStageEl.style.display  = 'none';
+  sceneHintEl.textContent     = 'Mouse to tilt  ·  ‹ › to navigate  ·  Overview to go back';
+  sceneSectionView.classList.add('active');
+  sectionViewActive = true;
+  sceneTargetRotY = 0;
+  sceneCurrRotY   = 0;
 }
+
+function closeSectionView() {
+  sectionViewActive = false;
+  sceneSectionView.classList.remove('active');
+  sceneStageEl.style.display = '';
+  sceneHintEl.textContent    = 'Move mouse to rotate \u00a0·\u00a0 Click a card to open';
+  sceneTargetRotY = 0;
+  sceneTargetRotX = 28;
+  sceneCurrRotY   = 0;
+  sceneCurrRotX   = 28;
+}
+
+function navigateFromScene(id) {
+  const idx = SCENE_DATA.findIndex(s => s.id === id);
+  openSectionView(id, idx >= 0 ? idx : 0);
+}
+
+sceneBackBtn.addEventListener('click', closeSectionView);
+scenePrevBtn.addEventListener('click', () => {
+  const i = (currentSectionIdx - 1 + SCENE_DATA.length) % SCENE_DATA.length;
+  openSectionView(SCENE_DATA[i].id, i);
+});
+sceneNextBtn.addEventListener('click', () => {
+  const i = (currentSectionIdx + 1) % SCENE_DATA.length;
+  openSectionView(SCENE_DATA[i].id, i);
+});
 
 // ---- Smooth mouse-driven rotation + float ----
 let sceneTargetRotY = 0, sceneTargetRotX = 28;
@@ -519,14 +597,27 @@ function onSceneMouseMove(e) {
 function sceneRenderLoop() {
   sceneCurrRotY += (sceneTargetRotY - sceneCurrRotY) * 0.07;
   sceneCurrRotX += (sceneTargetRotX - sceneCurrRotX) * 0.07;
-  const floatY = Math.sin(Date.now() / 2400) * 10;
-  sceneCardsEl.style.transform =
-    `rotateX(${sceneCurrRotX}deg) rotateY(${sceneCurrRotY}deg) translateY(${floatY}px)`;
+
+  if (sectionViewActive) {
+    // Gentle panel tilt driven by mouse
+    sceneSectionPanel.style.transform =
+      `rotateY(${sceneCurrRotY * 0.3}deg) rotateX(${-Math.abs(sceneCurrRotY) * 0.05}deg)`;
+  } else {
+    const floatY = Math.sin(Date.now() / 2400) * 10;
+    sceneCardsEl.style.transform =
+      `rotateX(${sceneCurrRotX}deg) rotateY(${sceneCurrRotY}deg) translateY(${floatY}px)`;
+  }
   sceneRAF = requestAnimationFrame(sceneRenderLoop);
 }
 
 // ---- Open / Close ----
 function openScene() {
+  // Reset any leftover section-view state
+  sectionViewActive = false;
+  sceneSectionView.classList.remove('active');
+  sceneStageEl.style.display = '';
+  sceneHintEl.textContent    = 'Move mouse to rotate \u00a0·\u00a0 Click a card to open';
+
   buildStars();
   buildSceneCards();
   sceneTargetRotY = sceneCurrRotY = 0;
@@ -543,6 +634,8 @@ function openScene() {
 }
 
 function closeScene() {
+  sectionViewActive = false;
+  sceneSectionView.classList.remove('active');
   scene3dEl.classList.remove('active');
   scene3dEl.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';

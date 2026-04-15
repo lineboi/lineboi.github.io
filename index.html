@@ -875,7 +875,32 @@
         <!-- Injected by JS -->
       </div>
     </div>
-    <div class="scene-hint">Move mouse to rotate &nbsp;·&nbsp; Click a card to navigate</div>
+
+    <!-- Section Detail Panel (shown when a card is clicked) -->
+    <div class="scene-section-view" id="scene-section-view">
+      <div class="scene-section-panel" id="scene-section-panel">
+        <div class="scene-section-topbar">
+          <button class="scene-back-btn" id="scene-back-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
+            Overview
+          </button>
+          <div class="scene-section-nav">
+            <button class="scene-nav-btn" id="scene-prev-btn" aria-label="Previous section">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <span class="scene-nav-counter" id="scene-nav-counter">1 / 9</span>
+            <button class="scene-nav-btn" id="scene-next-btn" aria-label="Next section">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="scene-section-body" id="scene-section-body">
+          <!-- Cloned section content injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-hint" id="scene-hint">Move mouse to rotate &nbsp;·&nbsp; Click a card to open</div>
   </div>
 
   <script src="script.js"></script>
