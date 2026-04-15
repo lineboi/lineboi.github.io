@@ -1187,6 +1187,67 @@ ul { list-style: none; }
 .award-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
 
 /* =============================================
+   HOBBIES
+   ============================================= */
+.hobbies-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.hobby-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.hobby-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 8px 32px rgba(99,102,241,0.12);
+}
+
+.hobby-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hobby-icon svg { width: 28px; height: 28px; }
+
+.hobby-icon--football { background: rgba(34,197,94,0.12); color: #22c55e; }
+.hobby-icon--billiard { background: rgba(234,179,8,0.12);  color: #eab308; }
+.hobby-icon--movies   { background: rgba(239,68,68,0.12);  color: #ef4444; }
+.hobby-icon--music    { background: rgba(99,102,241,0.12); color: var(--accent); }
+
+.hobby-card h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hobby-desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.hobby-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* =============================================
    GALLERY
    ============================================= */
 .gallery-filters {
@@ -1539,6 +1600,7 @@ footer {
 
   .projects-grid { grid-template-columns: 1fr 1fr; }
   .awards-grid { grid-template-columns: 1fr 1fr; }
+  .hobbies-grid { grid-template-columns: 1fr 1fr; }
 
   .gallery-grid {
     grid-template-columns: 1fr 1fr;
@@ -1553,6 +1615,7 @@ footer {
 
   .projects-grid { grid-template-columns: 1fr; }
   .awards-grid { grid-template-columns: 1fr; }
+  .hobbies-grid { grid-template-columns: 1fr; }
 
   .about-stats { gap: 24px; }
 
