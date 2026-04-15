@@ -271,7 +271,7 @@ const translations = {
     'exp.bullet4': "Narafashije ibikorwa byo guteza imbere ubumenyi bwa dijitali kugira ngo habe iyongera ry'ikoranabuhanga mu kagari ka Bugomba.",
     // Projects
     'projects.tag': "Ibyo Nabashije Kubaka", 'projects.title': 'Imishinga Yanjye',
-    'proj.1.title': 'Urubuga rw'Amagambo Bwite',
+    'proj.1.title': "Urubuga rw'Amagambo Bwite",
     'proj.1.desc': "Urubuga rwa portofoli rwa none n'inzira eshatu z'indimi (EN/FR/RW), ingaruka za 3D, uburyo bw'umurango/ijoro, ibikorwa bihuha, n'ingendo z'abasuye.",
     'proj.2.title': "Umuyoboro wo Gukurikirana Amahugurwa y'Abaturage",
     'proj.2.desc': "Igikoresho cy'amakuru cya Python na Excel cyakozwe mu gihe cy'Intumwa ya Dijitali ya RISA kugira ngo cyandike no gusesengura amahugurwa y'abantu barenga 250.",
