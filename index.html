@@ -851,6 +851,33 @@
     </div>
   </footer>
 
+  <!-- 3D Scene Overlay -->
+  <div id="scene-3d" class="scene-3d" aria-hidden="true">
+    <div class="scene-backdrop">
+      <div class="scene-floor"></div>
+      <div class="scene-stars" id="scene-stars"></div>
+    </div>
+    <div class="scene-ui-top">
+      <div class="scene-title-block">
+        <span class="scene-eyebrow">3D MODE</span>
+        <h2 class="scene-heading">Portfolio Overview</h2>
+        <p class="scene-subheading">Click any section to navigate there</p>
+      </div>
+      <button class="scene-exit-btn" id="scene-exit-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+        Exit 3D <kbd>ESC</kbd>
+      </button>
+    </div>
+    <div class="scene-stage" id="scene-stage">
+      <div class="scene-cards" id="scene-cards">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+    <div class="scene-hint">Move mouse to rotate &nbsp;·&nbsp; Click a card to navigate</div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

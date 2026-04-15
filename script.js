@@ -388,20 +388,24 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
 applyTheme(currentTheme);
 
 // =============================================
-//  3D MODE — card tilt on mousemove
+//  3D MODE — tilt effects + full 3D scene
 // =============================================
 let is3dMode = localStorage.getItem('mode3d') === 'true';
-const toggle3dBtn = document.getElementById('toggle-3d');
+const toggle3dBtn  = document.getElementById('toggle-3d');
+const scene3dEl    = document.getElementById('scene-3d');
+const sceneCardsEl = document.getElementById('scene-cards');
+const sceneExitBtn = document.getElementById('scene-exit-btn');
 
+// ---- Card tilt (active in 2D view when 3D mode is on) ----
 function handleTilt(e) {
   const card = e.currentTarget;
   const rect = card.getBoundingClientRect();
   const x = (e.clientX - rect.left) / rect.width;
-  const y = (e.clientY - rect.top) / rect.height;
+  const y = (e.clientY - rect.top)  / rect.height;
   const rotateY = (x - 0.5) * 18;
   const rotateX = (0.5 - y) * 18;
-  card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-  card.style.boxShadow = `${rotateY * -1}px ${rotateX}px 30px rgba(0,212,170,0.15)`;
+  card.style.transform  = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02,1.02,1.02)`;
+  card.style.boxShadow  = `${rotateY * -1}px ${rotateX}px 30px rgba(0,212,170,0.15)`;
   card.style.transition = 'none';
 }
 
@@ -425,16 +429,160 @@ function setTiltEffects(enabled) {
       card.style.boxShadow = '';
     }
   });
-  toggle3dBtn.classList.toggle('active', enabled);
 }
 
+// ---- 3D Scene data ----
+const SCENE_DATA = [
+  { id: 'about',      title: 'About Me',    tag: 'Who I Am',
+    icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
+  { id: 'skills',     title: 'Skills',      tag: 'What I Know',
+    icon: '<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>' },
+  { id: 'experience', title: 'Experience',  tag: "What I've Done",
+    icon: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>' },
+  { id: 'projects',   title: 'Projects',    tag: "What I've Built",
+    icon: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>' },
+  { id: 'education',  title: 'Education',   tag: 'My Background',
+    icon: '<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>' },
+  { id: 'awards',     title: 'Awards',      tag: 'Recognition',
+    icon: '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>' },
+  { id: 'gallery',    title: 'Gallery',     tag: 'My Journey',
+    icon: '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>' },
+  { id: 'hobbies',    title: 'Hobbies',     tag: 'Beyond the Code',
+    icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' },
+  { id: 'contact',    title: 'Contact',     tag: "Let's Connect",
+    icon: '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>' },
+];
+
+// ---- Build star particles in scene background ----
+function buildStars() {
+  const starsEl = document.getElementById('scene-stars');
+  if (!starsEl || starsEl.children.length) return;
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'scene-star';
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*70}%;
+      opacity:${Math.random()*0.5+0.1};
+      transform:scale(${Math.random()*1.5+0.5});
+      --dur:${(Math.random()*3+2).toFixed(1)}s;
+      --del:${(Math.random()*4).toFixed(1)}s;
+    `;
+    starsEl.appendChild(s);
+  }
+}
+
+// ---- Build section cards ----
+function buildSceneCards() {
+  sceneCardsEl.innerHTML = '';
+  SCENE_DATA.forEach((s, i) => {
+    const card = document.createElement('div');
+    card.className = 'scene-card';
+    card.style.animationDelay = `${i * 0.055}s`;
+    card.innerHTML = `
+      <span class="scene-card-num">${String(i + 1).padStart(2, '0')}</span>
+      <div class="scene-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${s.icon}</svg>
+      </div>
+      <h3 class="scene-card-title">${s.title}</h3>
+      <span class="scene-card-tag">${s.tag}</span>
+      <svg class="scene-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+        <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+      </svg>`;
+    card.addEventListener('click', () => navigateFromScene(s.id));
+    sceneCardsEl.appendChild(card);
+  });
+}
+
+function navigateFromScene(id) {
+  closeScene();
+  const el = document.getElementById(id);
+  if (el) {
+    setTimeout(() => {
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+    }, 420);
+  }
+}
+
+// ---- Smooth mouse-driven rotation + float ----
+let sceneTargetRotY = 0, sceneTargetRotX = 28;
+let sceneCurrRotY  = 0, sceneCurrRotX  = 28;
+let sceneRAF = null;
+
+function onSceneMouseMove(e) {
+  const cx = window.innerWidth  / 2;
+  const cy = window.innerHeight / 2;
+  sceneTargetRotY = (e.clientX - cx) / cx * 10;
+  sceneTargetRotX = 28 - (e.clientY - cy) / cy * 4;
+}
+
+function sceneRenderLoop() {
+  sceneCurrRotY += (sceneTargetRotY - sceneCurrRotY) * 0.07;
+  sceneCurrRotX += (sceneTargetRotX - sceneCurrRotX) * 0.07;
+  const floatY = Math.sin(Date.now() / 2400) * 10;
+  sceneCardsEl.style.transform =
+    `rotateX(${sceneCurrRotX}deg) rotateY(${sceneCurrRotY}deg) translateY(${floatY}px)`;
+  sceneRAF = requestAnimationFrame(sceneRenderLoop);
+}
+
+// ---- Open / Close ----
+function openScene() {
+  buildStars();
+  buildSceneCards();
+  sceneTargetRotY = sceneCurrRotY = 0;
+  sceneTargetRotX = sceneCurrRotX = 28;
+  scene3dEl.classList.add('active');
+  scene3dEl.removeAttribute('aria-hidden');
+  document.body.style.overflow = 'hidden';
+  document.addEventListener('mousemove', onSceneMouseMove);
+  sceneRenderLoop();
+  is3dMode = true;
+  localStorage.setItem('mode3d', 'true');
+  toggle3dBtn.classList.add('active');
+  setTiltEffects(true);
+}
+
+function closeScene() {
+  scene3dEl.classList.remove('active');
+  scene3dEl.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  document.removeEventListener('mousemove', onSceneMouseMove);
+  cancelAnimationFrame(sceneRAF);
+  sceneRAF = null;
+}
+
+// ---- Toggle button (cube icon in nav) ----
 toggle3dBtn.addEventListener('click', () => {
-  is3dMode = !is3dMode;
-  localStorage.setItem('mode3d', is3dMode);
-  setTiltEffects(is3dMode);
+  if (scene3dEl.classList.contains('active')) {
+    closeScene();
+    is3dMode = false;
+    localStorage.setItem('mode3d', 'false');
+    toggle3dBtn.classList.remove('active');
+  } else {
+    openScene();
+  }
 });
 
-setTiltEffects(is3dMode);
+// ---- Exit button inside scene ----
+sceneExitBtn.addEventListener('click', () => {
+  closeScene();
+  is3dMode = false;
+  localStorage.setItem('mode3d', 'false');
+  toggle3dBtn.classList.remove('active');
+});
+
+// ESC closes scene (lightbox ESC handler is separate and handles its own check)
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && scene3dEl.classList.contains('active')) {
+    closeScene();
+    is3dMode = false;
+    localStorage.setItem('mode3d', 'false');
+    toggle3dBtn.classList.remove('active');
+  }
+});
+
+// Re-enable tilt if previously saved (don't auto-open scene on load)
+if (is3dMode) setTiltEffects(true);
 
 // =============================================
 //  3D PARTICLE CANVAS
