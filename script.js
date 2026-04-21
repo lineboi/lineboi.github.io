@@ -433,23 +433,23 @@ function setTiltEffects(enabled) {
 
 // ---- 3D Scene data ----
 const SCENE_DATA = [
-  { id: 'about',      title: 'About Me',    tag: 'Who I Am',
+  { id: 'about',      titleKey: 'about.title',    tagKey: 'about.tag',
     icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
-  { id: 'skills',     title: 'Skills',      tag: 'What I Know',
+  { id: 'skills',     titleKey: 'skills.title',   tagKey: 'skills.tag',
     icon: '<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>' },
-  { id: 'experience', title: 'Experience',  tag: "What I've Done",
+  { id: 'experience', titleKey: 'exp.title',      tagKey: 'exp.tag',
     icon: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>' },
-  { id: 'projects',   title: 'Projects',    tag: "What I've Built",
+  { id: 'projects',   titleKey: 'projects.title', tagKey: 'projects.tag',
     icon: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>' },
-  { id: 'education',  title: 'Education',   tag: 'My Background',
+  { id: 'education',  titleKey: 'edu.title',      tagKey: 'edu.tag',
     icon: '<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>' },
-  { id: 'awards',     title: 'Awards',      tag: 'Recognition',
+  { id: 'awards',     titleKey: 'awards.title',   tagKey: 'awards.tag',
     icon: '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>' },
-  { id: 'gallery',    title: 'Gallery',     tag: 'My Journey',
+  { id: 'gallery',    titleKey: 'gallery.title',  tagKey: 'gallery.tag',
     icon: '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>' },
-  { id: 'hobbies',    title: 'Hobbies',     tag: 'Beyond the Code',
+  { id: 'hobbies',    titleKey: 'hobbies.title',  tagKey: 'hobbies.tag',
     icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' },
-  { id: 'contact',    title: 'Contact',     tag: "Let's Connect",
+  { id: 'contact',    titleKey: 'contact.title',  tagKey: 'contact.tag',
     icon: '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>' },
 ];
 
@@ -475,6 +475,7 @@ function buildStars() {
 // ---- Build section cards ----
 function buildSceneCards() {
   sceneCardsEl.innerHTML = '';
+  const t = translations[currentLang];
   SCENE_DATA.forEach((s, i) => {
     const card = document.createElement('div');
     card.className = 'scene-card';
@@ -484,8 +485,8 @@ function buildSceneCards() {
       <div class="scene-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${s.icon}</svg>
       </div>
-      <h3 class="scene-card-title">${s.title}</h3>
-      <span class="scene-card-tag">${s.tag}</span>
+      <h3 class="scene-card-title">${t[s.titleKey] || s.titleKey}</h3>
+      <span class="scene-card-tag">${t[s.tagKey] || s.tagKey}</span>
       <svg class="scene-card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
         <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
       </svg>`;
@@ -498,15 +499,24 @@ function buildSceneCards() {
 let sectionViewActive = false;
 let currentSectionIdx = 0;
 
-const sceneSectionView = document.getElementById('scene-section-view');
-const sceneSectionBody = document.getElementById('scene-section-body');
+const sceneSectionView  = document.getElementById('scene-section-view');
+const sceneSectionBody  = document.getElementById('scene-section-body');
 const sceneSectionPanel = document.getElementById('scene-section-panel');
-const sceneBackBtn     = document.getElementById('scene-back-btn');
-const scenePrevBtn     = document.getElementById('scene-prev-btn');
-const sceneNextBtn     = document.getElementById('scene-next-btn');
-const sceneNavCounter  = document.getElementById('scene-nav-counter');
-const sceneHintEl      = document.getElementById('scene-hint');
-const sceneStageEl     = document.getElementById('scene-stage');
+const scenePanelWrapper = document.getElementById('scene-panel-wrapper');
+const sceneTopbar       = document.getElementById('scene-section-topbar');
+const sceneBackBtn      = document.getElementById('scene-back-btn');
+const scenePrevBtn      = document.getElementById('scene-prev-btn');
+const sceneNextBtn      = document.getElementById('scene-next-btn');
+const sceneNavCounter   = document.getElementById('scene-nav-counter');
+const sceneHintEl       = document.getElementById('scene-hint');
+const sceneStageEl      = document.getElementById('scene-stage');
+
+// ---- Panel 3D rotation state ----
+let panelRotX = 0, panelRotY = 0;
+let panelTargetRotX = 0, panelTargetRotY = 0;
+let isPanelDragging = false;
+let panelDragLastX = 0, panelDragLastY = 0;
+let isFlipping = false;
 
 function openSectionView(id, idx) {
   currentSectionIdx = idx;
@@ -549,11 +559,16 @@ function openSectionView(id, idx) {
 
   sceneNavCounter.textContent = `${idx + 1} / ${SCENE_DATA.length}`;
   sceneStageEl.style.display  = 'none';
-  sceneHintEl.textContent     = 'Mouse to tilt  ·  ‹ › to navigate  ·  Overview to go back';
+  sceneHintEl.textContent     = 'Drag topbar to rotate  ·  Hover to tilt  ·  ‹ › navigate  ·  Dbl-click to reset';
   sceneSectionView.classList.add('active');
   sectionViewActive = true;
   sceneTargetRotY = 0;
   sceneCurrRotY   = 0;
+  // Reset panel rotation only if not in a flip animation
+  if (!isFlipping) {
+    panelTargetRotX = panelRotX = 0;
+    panelTargetRotY = panelRotY = 0;
+  }
 }
 
 function closeSectionView() {
@@ -565,6 +580,9 @@ function closeSectionView() {
   sceneTargetRotX = 28;
   sceneCurrRotY   = 0;
   sceneCurrRotX   = 28;
+  panelTargetRotX = panelRotX = 0;
+  panelTargetRotY = panelRotY = 0;
+  isFlipping = false;
 }
 
 function navigateFromScene(id) {
@@ -573,13 +591,85 @@ function navigateFromScene(id) {
 }
 
 sceneBackBtn.addEventListener('click', closeSectionView);
+
+// ---- Page-flip navigation ----
+function flipToSection(idx, dir) {
+  if (isFlipping) return;
+  isFlipping = true;
+  // Flip panel away
+  panelTargetRotY = dir === 'next' ? -110 : 110;
+  setTimeout(() => {
+    openSectionView(SCENE_DATA[idx].id, idx);
+    // Snap panel to the incoming side, then animate to center
+    panelRotY        = dir === 'next' ? 110 : -110;
+    panelTargetRotY  = 0;
+    panelRotX        = 0;
+    panelTargetRotX  = 0;
+    isFlipping = false;
+  }, 280);
+}
+
 scenePrevBtn.addEventListener('click', () => {
   const i = (currentSectionIdx - 1 + SCENE_DATA.length) % SCENE_DATA.length;
-  openSectionView(SCENE_DATA[i].id, i);
+  flipToSection(i, 'prev');
 });
 sceneNextBtn.addEventListener('click', () => {
   const i = (currentSectionIdx + 1) % SCENE_DATA.length;
-  openSectionView(SCENE_DATA[i].id, i);
+  flipToSection(i, 'next');
+});
+
+// ---- Topbar drag-to-rotate ----
+sceneTopbar.addEventListener('mousedown', e => {
+  if (!sectionViewActive) return;
+  isPanelDragging = true;
+  panelDragLastX = e.clientX;
+  panelDragLastY = e.clientY;
+  e.preventDefault();
+});
+
+// Touch support for drag-to-rotate
+sceneTopbar.addEventListener('touchstart', e => {
+  if (!sectionViewActive) return;
+  isPanelDragging = true;
+  panelDragLastX = e.touches[0].clientX;
+  panelDragLastY = e.touches[0].clientY;
+}, { passive: true });
+
+document.addEventListener('touchmove', e => {
+  if (!isPanelDragging || !sectionViewActive) return;
+  const dx = e.touches[0].clientX - panelDragLastX;
+  const dy = e.touches[0].clientY - panelDragLastY;
+  panelTargetRotY += dx * 0.55;
+  panelTargetRotX -= dy * 0.55;
+  panelTargetRotY  = Math.max(-75, Math.min(75, panelTargetRotY));
+  panelTargetRotX  = Math.max(-50, Math.min(50, panelTargetRotX));
+  panelDragLastX   = e.touches[0].clientX;
+  panelDragLastY   = e.touches[0].clientY;
+}, { passive: true });
+
+document.addEventListener('touchend', () => { isPanelDragging = false; });
+
+// Double-click to reset rotation
+scenePanelWrapper.addEventListener('dblclick', () => {
+  panelTargetRotX = 0;
+  panelTargetRotY = 0;
+});
+
+// ---- Panel hover tilt (mouse position relative to panel) ----
+scenePanelWrapper.addEventListener('mousemove', e => {
+  if (!sectionViewActive || isPanelDragging || isFlipping) return;
+  const rect = scenePanelWrapper.getBoundingClientRect();
+  const normX = (e.clientX - (rect.left + rect.width  / 2)) / (rect.width  / 2);
+  const normY = (e.clientY - (rect.top  + rect.height / 2)) / (rect.height / 2);
+  panelTargetRotY = normX * 22;   // ±22 degrees Y
+  panelTargetRotX = -normY * 14;  // ±14 degrees X
+});
+
+scenePanelWrapper.addEventListener('mouseleave', () => {
+  if (!isPanelDragging) {
+    panelTargetRotX = 0;
+    panelTargetRotY = 0;
+  }
 });
 
 // ---- Smooth mouse-driven rotation + float ----
@@ -592,16 +682,37 @@ function onSceneMouseMove(e) {
   const cy = window.innerHeight / 2;
   sceneTargetRotY = (e.clientX - cx) / cx * 10;
   sceneTargetRotX = 28 - (e.clientY - cy) / cy * 4;
+  // Handle drag-to-rotate for the panel (global mouse move)
+  if (isPanelDragging && sectionViewActive) {
+    const dx = e.clientX - panelDragLastX;
+    const dy = e.clientY - panelDragLastY;
+    panelTargetRotY += dx * 0.55;
+    panelTargetRotX -= dy * 0.55;
+    panelTargetRotY  = Math.max(-75, Math.min(75, panelTargetRotY));
+    panelTargetRotX  = Math.max(-50, Math.min(50, panelTargetRotX));
+    panelDragLastX   = e.clientX;
+    panelDragLastY   = e.clientY;
+  }
 }
+
+document.addEventListener('mouseup', () => { isPanelDragging = false; });
 
 function sceneRenderLoop() {
   sceneCurrRotY += (sceneTargetRotY - sceneCurrRotY) * 0.07;
   sceneCurrRotX += (sceneTargetRotX - sceneCurrRotX) * 0.07;
 
   if (sectionViewActive) {
-    // Gentle panel tilt driven by mouse
-    sceneSectionPanel.style.transform =
-      `rotateY(${sceneCurrRotY * 0.3}deg) rotateX(${-Math.abs(sceneCurrRotY) * 0.05}deg)`;
+    // Smooth 3D panel rotation
+    panelRotX += (panelTargetRotX - panelRotX) * 0.1;
+    panelRotY += (panelTargetRotY - panelRotY) * 0.1;
+    scenePanelWrapper.style.transform =
+      `rotateX(${panelRotX}deg) rotateY(${panelRotY}deg)`;
+
+    // Dynamic shadow depth based on rotation
+    const depth = Math.abs(panelRotY) * 0.4 + Math.abs(panelRotX) * 0.2;
+    sceneSectionPanel.style.boxShadow =
+      `${-panelRotY * 0.8}px ${panelRotX * 0.4}px ${40 + depth}px rgba(0,0,0,0.9),`+
+      `0 0 ${30 + depth}px rgba(0,212,170,${0.04 + Math.abs(panelRotY) / 300})`;
   } else {
     const floatY = Math.sin(Date.now() / 2400) * 10;
     sceneCardsEl.style.transform =
@@ -620,6 +731,8 @@ function openScene() {
 
   buildStars();
   buildSceneCards();
+  syncSceneTheme();
+  syncSceneLangLabel();
   sceneTargetRotY = sceneCurrRotY = 0;
   sceneTargetRotX = sceneCurrRotX = 28;
   scene3dEl.classList.add('active');
@@ -663,6 +776,40 @@ sceneExitBtn.addEventListener('click', () => {
   localStorage.setItem('mode3d', 'false');
   toggle3dBtn.classList.remove('active');
 });
+
+// ---- Scene language toggle ----
+const sceneLangBtn   = document.getElementById('scene-lang-btn');
+const sceneLangLabel = document.getElementById('scene-lang-label');
+
+function syncSceneLangLabel() {
+  if (sceneLangLabel) sceneLangLabel.textContent = currentLang.toUpperCase();
+}
+
+if (sceneLangBtn) {
+  sceneLangBtn.addEventListener('click', () => {
+    const next = currentLang === 'en' ? 'fr' : currentLang === 'fr' ? 'rw' : 'en';
+    applyLanguage(next);
+    if (scene3dEl.classList.contains('active')) buildSceneCards();
+    syncSceneLangLabel();
+  });
+}
+
+// ---- Scene theme toggle ----
+const sceneThemeBtn = document.getElementById('scene-theme-btn');
+
+function syncSceneTheme() {
+  if (!sceneThemeBtn) return;
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  scene3dEl.classList.toggle('scene-light', isLight);
+  sceneThemeBtn.classList.toggle('active', isLight);
+}
+
+if (sceneThemeBtn) {
+  sceneThemeBtn.addEventListener('click', () => {
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    syncSceneTheme();
+  });
+}
 
 // ESC closes scene (lightbox ESC handler is separate and handles its own check)
 document.addEventListener('keydown', e => {
@@ -978,6 +1125,293 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+// =============================================
+//  DNA HELIX HOBBIES
+// =============================================
+(function initDNA() {
+  const HOBBIES = [
+    {
+      color: '#22c55e',
+      titleKey: 'hobby.football.title',
+      descKey:  'hobby.football.desc',
+      tags: [
+        { key: 'hobby.tag.teamplay', en: 'Team Play' },
+        { key: 'hobby.tag.strategy', en: 'Strategy'  },
+        { key: 'hobby.tag.fitness',  en: 'Fitness'   },
+      ],
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        <path d="M2 12h20"/>
+      </svg>`,
+    },
+    {
+      color: '#eab308',
+      titleKey: 'hobby.billiard.title',
+      descKey:  'hobby.billiard.desc',
+      tags: [
+        { key: 'hobby.tag.precision', en: 'Precision' },
+        { key: 'hobby.tag.focus',     en: 'Focus'     },
+        { key: 'hobby.tag.patience',  en: 'Patience'  },
+      ],
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"/>
+        <circle cx="12" cy="12" r="3"/>
+        <line x1="4.22" y1="4.22" x2="7.76" y2="7.76"/>
+        <line x1="19.78" y1="4.22" x2="16.24" y2="7.76"/>
+        <line x1="4.22" y1="19.78" x2="7.76" y2="16.24"/>
+        <line x1="19.78" y1="19.78" x2="16.24" y2="16.24"/>
+      </svg>`,
+    },
+    {
+      color: '#ef4444',
+      titleKey: 'hobby.movies.title',
+      descKey:  'hobby.movies.desc',
+      tags: [
+        { key: null,                  en: 'Sci-Fi'   },
+        { key: 'hobby.tag.thriller',  en: 'Thriller' },
+        { key: 'hobby.tag.biopic',    en: 'Biopic'   },
+      ],
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+        <line x1="7" y1="2" x2="7" y2="22"/>
+        <line x1="17" y1="2" x2="17" y2="22"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <line x1="2" y1="7" x2="7" y2="7"/>
+        <line x1="2" y1="17" x2="7" y2="17"/>
+        <line x1="17" y1="17" x2="22" y2="17"/>
+        <line x1="17" y1="7" x2="22" y2="7"/>
+      </svg>`,
+    },
+    {
+      color: '#00d4aa',
+      titleKey: 'hobby.music.title',
+      descKey:  'hobby.music.desc',
+      tags: [
+        { key: 'hobby.tag.afrobeats', en: 'Afrobeats' },
+        { key: 'hobby.tag.hiphop',    en: 'Hip-Hop'   },
+        { key: 'hobby.tag.gospel',    en: 'Gospel'     },
+      ],
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/>
+        <circle cx="18" cy="16" r="3"/>
+      </svg>`,
+    },
+  ];
+
+  const canvas    = document.getElementById('dna-canvas');
+  const connector = document.getElementById('dna-connector');
+  const cardEl    = document.getElementById('dna-hobby-card');
+  const iconEl    = document.getElementById('dna-hobby-icon');
+  const numEl     = document.getElementById('dna-hobby-num');
+  const titleEl   = document.getElementById('dna-hobby-title');
+  const descEl    = document.getElementById('dna-hobby-desc');
+  const tagsEl    = document.getElementById('dna-hobby-tags');
+  const dots      = document.querySelectorAll('.dna-dot');
+  const nodes     = document.querySelectorAll('.dna-node');
+
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let W, H, activeIdx = 0, animFrame = null;
+
+  function getNodePositions() {
+    // On mobile the layout stacks and the helix is horizontal (wide, short)
+    const isMobile = canvas.offsetHeight < canvas.offsetWidth;
+    if (isMobile) {
+      const margin = canvas.offsetWidth * 0.12;
+      const span   = canvas.offsetWidth - margin * 2;
+      return [0, 1, 2, 3].map(i => margin + (span / 3) * i);
+    }
+    const margin = canvas.offsetHeight * 0.08;
+    const span   = canvas.offsetHeight - margin * 2;
+    return [0, 1, 2, 3].map(i => margin + (span / 3) * i);
+  }
+
+  function syncCanvasSize() {
+    canvas.width  = canvas.offsetWidth  || 200;
+    canvas.height = canvas.offsetHeight || 480;
+    W = canvas.width;
+    H = canvas.height;
+  }
+
+  // ---- Render hobby detail card ----
+  function showHobby(idx) {
+    activeIdx = idx;
+    const h = HOBBIES[idx];
+    const t = translations[currentLang];
+
+    iconEl.innerHTML = h.icon;
+    iconEl.style.color      = h.color;
+    iconEl.style.background = `color-mix(in srgb, ${h.color} 12%, transparent)`;
+    numEl.textContent   = `${String(idx + 1).padStart(2, '0')} / 04`;
+    titleEl.textContent = t[h.titleKey] || h.titleKey;
+    descEl.textContent  = t[h.descKey]  || h.descKey;
+
+    tagsEl.innerHTML = h.tags.map(tag => {
+      const label = (tag.key && t[tag.key]) ? t[tag.key] : tag.en;
+      return `<span class="tag" style="color:${h.color};border-color:${h.color}40;background:${h.color}12">${label}</span>`;
+    }).join('');
+
+    cardEl.style.setProperty('--nc', h.color);
+    cardEl.classList.remove('dna-card-swap');
+    void cardEl.offsetWidth;
+    cardEl.classList.add('dna-card-swap');
+
+    // Active node highlight
+    nodes.forEach((n, i) => n.classList.toggle('active', i === idx));
+    dots.forEach((d, i)  => d.classList.toggle('active', i === idx));
+
+    // Connector is repositioned each frame in drawHelix for desktop
+  }
+
+  // ---- Helpers ----
+  function hexRgba(hex, a) {
+    const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+  function dot(x, y, r) { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill(); }
+
+  // ---- Canvas: animated DNA double helix (rung-based, like real DNA) ----
+  let tick = 0;
+  function drawHelix() {
+    syncCanvasSize();
+    ctx.clearRect(0, 0, W, H);
+    tick += 0.016;
+
+    const isMobile = H < W;
+    const LEN    = isMobile ? W : H;
+    const CROSS  = isMobile ? H : W;
+    const CX     = CROSS / 2;
+    const AMP    = Math.min(CROSS * 0.30, 60);
+    const PERIOD = LEN * 0.58;   // ~1.7 full turns — dense enough to look like DNA
+    const nodePos = getNodePositions();
+
+    // Build rung list — one rung every RUNG_GAP pixels along main axis
+    const RUNG_GAP = 20;
+    const rungs = [];
+    for (let p = RUNG_GAP / 2; p < LEN; p += RUNG_GAP) rungs.push(p);
+
+    // Pre-assign each rung to a hobby node (nearest within 1.5× gap)
+    const rungToHobby = rungs.map(r => {
+      let best = -1, bestD = Infinity;
+      nodePos.forEach((np, i) => {
+        const d = Math.abs(r - np);
+        if (d < RUNG_GAP * 1.5 && d < bestD) { bestD = d; best = i; }
+      });
+      return best;
+    });
+
+    // ---- Draw rungs FIRST (behind the strands) ----
+    rungs.forEach((r, ri) => {
+      const phase = (r / PERIOD) * Math.PI * 2 - tick * Math.PI * 2;
+      const c1 = CX + Math.sin(phase)           * AMP;
+      const c2 = CX + Math.sin(phase + Math.PI) * AMP;
+      const [x1, y1] = isMobile ? [r, c1] : [c1, r];
+      const [x2, y2] = isMobile ? [r, c2] : [c2, r];
+
+      const hi = rungToHobby[ri];
+      if (hi >= 0) {
+        // Hobby-colored rung — prominent, like in the DNA image
+        ctx.strokeStyle = hexRgba(HOBBIES[hi].color, 0.9);
+        ctx.lineWidth   = 3;
+        // Larger glowing endpoint dots
+        ctx.fillStyle   = hexRgba(HOBBIES[hi].color, 0.95);
+        dot(x1, y1, 6);
+        dot(x2, y2, 6);
+        // Inner white dot for "base-pair" look
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        dot(x1, y1, 2.5);
+        dot(x2, y2, 2.5);
+        // Position the node button on strand-1 endpoint
+        nodes[hi].style.left = x1 + 'px';
+        nodes[hi].style.top  = y1 + 'px';
+      } else {
+        // Regular faint rung
+        const d = 0.12 + 0.07 * Math.abs(Math.sin((r / PERIOD) * Math.PI));
+        ctx.strokeStyle = `rgba(0,212,170,${d})`;
+        ctx.lineWidth   = 1.2;
+        ctx.fillStyle   = `rgba(0,212,170,0.28)`;
+        dot(x1, y1, 2.8);
+        dot(x2, y2, 2.8);
+      }
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    });
+
+    // ---- Draw strands ON TOP of rungs ----
+    const drawStrand = (phaseOff, color, w) => {
+      ctx.beginPath();
+      for (let p = 0; p <= LEN; p += 3) {
+        const ph = (p / PERIOD) * Math.PI * 2 - tick * Math.PI * 2 + phaseOff;
+        const c  = CX + Math.sin(ph) * AMP;
+        const [x, y] = isMobile ? [p, c] : [c, p];
+        p === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineJoin = 'round'; ctx.stroke();
+    };
+    drawStrand(0,        'rgba(0,212,170,0.70)', 2.8);
+    drawStrand(Math.PI,  'rgba(80,180,255,0.45)', 2.2);
+
+    // Connector to active card (desktop only)
+    if (connector && !isMobile) {
+      const activeRungIdx = rungToHobby.findIndex((_, ri) => rungToHobby[ri] === activeIdx);
+      if (activeRungIdx >= 0) connector.style.top = rungs[activeRungIdx] + 'px';
+    }
+
+    animFrame = requestAnimationFrame(drawHelix);
+  }
+
+  // ---- Node & dot click handlers ----
+  nodes.forEach((node, i) => {
+    node.addEventListener('click', () => showHobby(i));
+  });
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => showHobby(i));
+  });
+
+  // ---- Auto-cycle every 4s ----
+  let cycleTimer = setInterval(() => {
+    showHobby((activeIdx + 1) % HOBBIES.length);
+  }, 4000);
+
+  // Pause auto-cycle on interaction
+  [...nodes, ...dots].forEach(el => {
+    el.addEventListener('click', () => {
+      clearInterval(cycleTimer);
+      cycleTimer = setInterval(() => {
+        showHobby((activeIdx + 1) % HOBBIES.length);
+      }, 6000);
+    });
+  });
+
+  // Re-render card when language changes (hook into applyLanguage)
+  const _origApplyLanguage = window._dnaLangHook;
+  document.getElementById('lang-toggle').addEventListener('click', () => {
+    setTimeout(() => showHobby(activeIdx), 50);
+  });
+
+  // Init
+  syncCanvasSize();
+  showHobby(0);
+  drawHelix();
+  window.addEventListener('resize', syncCanvasSize);
+
+  // Pause animation when section not visible (perf)
+  const dnaSection = document.getElementById('hobbies');
+  if (dnaSection) {
+    const obs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        if (!animFrame) drawHelix();
+      } else {
+        cancelAnimationFrame(animFrame);
+        animFrame = null;
+      }
+    });
+    obs.observe(dnaSection);
+  }
+})();
 
 // =============================================
 //  INIT

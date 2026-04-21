@@ -655,40 +655,34 @@
     </div>
   </div>
 
-  <!-- Hobbies -->
+  <!-- Hobbies — DNA Helix -->
   <section id="hobbies" class="section section-dark">
     <div class="container">
       <div class="section-header">
         <span class="section-tag" data-i18n="hobbies.tag">Beyond the Code</span>
         <h2 class="section-title" data-i18n="hobbies.title">My Hobbies</h2>
       </div>
-      <div class="hobbies-grid">
 
-        <!-- Football -->
-        <div class="hobby-card tilt-card">
-          <div class="hobby-icon hobby-icon--football">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <div class="dna-layout">
+
+        <!-- Left: animated DNA double helix with 4 clickable nodes -->
+        <div class="dna-helix-wrap" id="dna-helix-wrap">
+          <canvas id="dna-canvas" width="200" height="480"></canvas>
+
+          <!-- Node 0 — Football -->
+          <button class="dna-node" id="dna-node-0" data-idx="0" style="--nc:#22c55e" aria-label="Football">
+            <span class="dna-node-ring"></span>
+            <svg class="dna-node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <circle cx="12" cy="12" r="10"/>
               <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
               <path d="M2 12h20"/>
             </svg>
-          </div>
-          <h3 data-i18n="hobby.football.title">Football</h3>
-          <p class="hobby-desc" data-i18n="hobby.football.desc">
-            Football is my greatest passion off the screen. Whether playing with friends or watching my
-            favourite clubs, the beautiful game keeps me energized, focused, and always ready for teamwork.
-          </p>
-          <div class="hobby-tags">
-            <span class="tag" data-i18n="hobby.tag.teamplay">Team Play</span>
-            <span class="tag" data-i18n="hobby.tag.strategy">Strategy</span>
-            <span class="tag" data-i18n="hobby.tag.fitness">Fitness</span>
-          </div>
-        </div>
+          </button>
 
-        <!-- Billiard -->
-        <div class="hobby-card tilt-card">
-          <div class="hobby-icon hobby-icon--billiard">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <!-- Node 1 — Billiard -->
+          <button class="dna-node" id="dna-node-1" data-idx="1" style="--nc:#eab308" aria-label="Billiard">
+            <span class="dna-node-ring"></span>
+            <svg class="dna-node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <circle cx="12" cy="12" r="10"/>
               <circle cx="12" cy="12" r="3"/>
               <line x1="4.22" y1="4.22" x2="7.76" y2="7.76"/>
@@ -696,23 +690,12 @@
               <line x1="4.22" y1="19.78" x2="7.76" y2="16.24"/>
               <line x1="19.78" y1="19.78" x2="16.24" y2="16.24"/>
             </svg>
-          </div>
-          <h3 data-i18n="hobby.billiard.title">Billiard</h3>
-          <p class="hobby-desc" data-i18n="hobby.billiard.desc">
-            Billiard sharpens my precision and patience. Every shot is a small puzzle — reading angles,
-            planning ahead, and staying calm under pressure, much like debugging a tricky piece of code.
-          </p>
-          <div class="hobby-tags">
-            <span class="tag" data-i18n="hobby.tag.precision">Precision</span>
-            <span class="tag" data-i18n="hobby.tag.focus">Focus</span>
-            <span class="tag" data-i18n="hobby.tag.patience">Patience</span>
-          </div>
-        </div>
+          </button>
 
-        <!-- Movies -->
-        <div class="hobby-card tilt-card">
-          <div class="hobby-icon hobby-icon--movies">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <!-- Node 2 — Movies -->
+          <button class="dna-node" id="dna-node-2" data-idx="2" style="--nc:#ef4444" aria-label="Movies">
+            <span class="dna-node-ring"></span>
+            <svg class="dna-node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
               <line x1="7" y1="2" x2="7" y2="22"/>
               <line x1="17" y1="2" x2="17" y2="22"/>
@@ -722,37 +705,42 @@
               <line x1="17" y1="17" x2="22" y2="17"/>
               <line x1="17" y1="7" x2="22" y2="7"/>
             </svg>
-          </div>
-          <h3 data-i18n="hobby.movies.title">Watching Movies</h3>
-          <p class="hobby-desc" data-i18n="hobby.movies.desc">
-            Movies are my window to different worlds and perspectives. I love stories that challenge
-            the mind — from sci-fi and thrillers to inspiring biopics about visionaries who changed the world.
-          </p>
-          <div class="hobby-tags">
-            <span class="tag">Sci-Fi</span>
-            <span class="tag" data-i18n="hobby.tag.thriller">Thriller</span>
-            <span class="tag" data-i18n="hobby.tag.biopic">Biopic</span>
-          </div>
-        </div>
+          </button>
 
-        <!-- Music -->
-        <div class="hobby-card tilt-card">
-          <div class="hobby-icon hobby-icon--music">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <!-- Node 3 — Music -->
+          <button class="dna-node" id="dna-node-3" data-idx="3" style="--nc:#00d4aa" aria-label="Music">
+            <span class="dna-node-ring"></span>
+            <svg class="dna-node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M9 18V5l12-2v13"/>
               <circle cx="6" cy="18" r="3"/>
               <circle cx="18" cy="16" r="3"/>
             </svg>
+          </button>
+        </div>
+
+        <!-- Right: hobby detail card -->
+        <div class="dna-detail-panel">
+          <!-- Animated connector line (JS positions this vertically) -->
+          <div class="dna-connector" id="dna-connector"></div>
+
+          <div class="dna-hobby-card" id="dna-hobby-card">
+            <div class="dna-hobby-head">
+              <div class="dna-hobby-icon" id="dna-hobby-icon"></div>
+              <div class="dna-hobby-meta">
+                <span class="dna-hobby-num" id="dna-hobby-num">01 / 04</span>
+                <h3 class="dna-hobby-title" id="dna-hobby-title"></h3>
+              </div>
+            </div>
+            <p class="dna-hobby-desc" id="dna-hobby-desc"></p>
+            <div class="dna-hobby-tags" id="dna-hobby-tags"></div>
           </div>
-          <h3 data-i18n="hobby.music.title">Listening to Music</h3>
-          <p class="hobby-desc" data-i18n="hobby.music.desc">
-            Music is my constant companion — whether coding late at night, travelling, or unwinding
-            after a long day. Good rhythms fuel creativity and keep the mind in flow state.
-          </p>
-          <div class="hobby-tags">
-            <span class="tag" data-i18n="hobby.tag.afrobeats">Afrobeats</span>
-            <span class="tag" data-i18n="hobby.tag.hiphop">Hip-Hop</span>
-            <span class="tag" data-i18n="hobby.tag.gospel">Gospel</span>
+
+          <!-- Navigation dots -->
+          <div class="dna-dots">
+            <button class="dna-dot" data-idx="0" aria-label="Football"></button>
+            <button class="dna-dot" data-idx="1" aria-label="Billiard"></button>
+            <button class="dna-dot" data-idx="2" aria-label="Movies"></button>
+            <button class="dna-dot" data-idx="3" aria-label="Music"></button>
           </div>
         </div>
 
@@ -863,12 +851,30 @@
         <h2 class="scene-heading">Portfolio Overview</h2>
         <p class="scene-subheading">Click any section to navigate there</p>
       </div>
-      <button class="scene-exit-btn" id="scene-exit-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-        Exit 3D <kbd>ESC</kbd>
-      </button>
+      <div class="scene-top-actions">
+        <!-- Language cycle inside 3D -->
+        <button class="scene-ctrl-btn" id="scene-lang-btn" aria-label="Switch language">
+          <span id="scene-lang-label">EN</span>
+        </button>
+        <!-- Theme toggle inside 3D -->
+        <button class="scene-ctrl-btn" id="scene-theme-btn" aria-label="Toggle light/dark">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <button class="scene-exit-btn" id="scene-exit-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+          Exit 3D <kbd>ESC</kbd>
+        </button>
+      </div>
     </div>
     <div class="scene-stage" id="scene-stage">
       <div class="scene-cards" id="scene-cards">
@@ -878,24 +884,38 @@
 
     <!-- Section Detail Panel (shown when a card is clicked) -->
     <div class="scene-section-view" id="scene-section-view">
-      <div class="scene-section-panel" id="scene-section-panel">
-        <div class="scene-section-topbar">
-          <button class="scene-back-btn" id="scene-back-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
-            Overview
-          </button>
-          <div class="scene-section-nav">
-            <button class="scene-nav-btn" id="scene-prev-btn" aria-label="Previous section">
+      <!-- 3D wrapper receives the rotation transform -->
+      <div id="scene-panel-wrapper" class="scene-panel-wrapper">
+        <!-- Visible depth edges — appear as 3D sides when panel rotates -->
+        <div class="panel-edge panel-edge--right"></div>
+        <div class="panel-edge panel-edge--left"></div>
+        <div class="panel-edge panel-edge--bottom"></div>
+        <!-- Front face -->
+        <div class="scene-section-panel" id="scene-section-panel">
+          <div class="scene-section-topbar" id="scene-section-topbar">
+            <button class="scene-back-btn" id="scene-back-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
+              Overview
             </button>
-            <span class="scene-nav-counter" id="scene-nav-counter">1 / 9</span>
-            <button class="scene-nav-btn" id="scene-next-btn" aria-label="Next section">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
+            <div class="scene-topbar-center">
+              <span class="scene-drag-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="7" r="1"/><circle cx="15" cy="7" r="1"/><circle cx="9" cy="17" r="1"/><circle cx="15" cy="17" r="1"/></svg>
+                Drag to rotate
+              </span>
+            </div>
+            <div class="scene-section-nav">
+              <button class="scene-nav-btn" id="scene-prev-btn" aria-label="Previous section">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <span class="scene-nav-counter" id="scene-nav-counter">1 / 9</span>
+              <button class="scene-nav-btn" id="scene-next-btn" aria-label="Next section">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="scene-section-body" id="scene-section-body">
-          <!-- Cloned section content injected by JS -->
+          <div class="scene-section-body" id="scene-section-body">
+            <!-- Cloned section content injected by JS -->
+          </div>
         </div>
       </div>
     </div>
